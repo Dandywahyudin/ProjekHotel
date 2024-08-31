@@ -12,7 +12,8 @@ class HotelBookingController extends Controller
      */
     public function index()
     {
-        //
+        $hotelBooking = HotelBooking::with('hotel', 'customer')->orderByDesc('id')->paginate(10);
+        return view('admin.hotel_bookings.index', compact('hotel_bookings'));
     }
 
     /**
