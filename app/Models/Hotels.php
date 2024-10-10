@@ -29,11 +29,11 @@ class Hotels extends Model
     public function photos(){
         return $this->hasMany(HotelPhotos::class);
     }
-    public function room(){
+    public function rooms(){
         return $this->hasMany(HotelRoom::class);
     }
     public function getLowestRoomPrice(){
-        $minPrice = $this->room()->min('price');
+        $minPrice = $this->rooms()->min('price');
         return $minPrice ?? 0;
     }
 }

@@ -13,11 +13,11 @@ class HotelRoom extends Model
         'name',
         'photo',
         'price',
-        'total_price',
-        'hotel_id',
+        'total_people',
+        'hotels_id',
     ];
 
     public function hotel() {
-        return $this->belongsTo(Hotels::class, 'hotel_id');
+        return $this->belongsTo(Hotels::class, 'hotels_id');
     }
 }

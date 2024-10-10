@@ -8,16 +8,15 @@
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden p-10 shadow-sm sm:rounded-lg">
-
                 <div class="item-card flex flex-row justify-between items-center">
                     <div class="flex flex-row items-center gap-x-3">
-                        <img src=" " alt="" class="rounded-2xl object-cover w-[120px] h-[90px]">
+                        <img src="{{ Storage::url($hotel->thumbnail)}}" alt="" class="rounded-2xl object-cover w-[180px] h-[130px]">
                         <div class="flex flex-col">
-                            <h3 class="text-indigo-950 text-xl font-bold">
-                                asdsad
-                            </h3>
-                        <p class="text-slate-500 text-sm">
-                           asdsad, asdasd
+                            <h2 class="text-indigo-950 text-xl font-bold">
+                                {{ $hotel->name }}
+                            </h2>
+                        <p class="text-slate-500 text-m">
+                           {{ $hotel->city->name}}, {{ $hotel->country->name }}
                         </p>
                         </div>
                     </div>
@@ -25,8 +24,8 @@
 
                 <hr class="my-5"> 
 
-                <form method="POST" action=" " enctype="multipart/form-data"> 
-
+                <form method="POST" action="{{route('admin.hotel_rooms.store', $hotel->slug)}}" enctype="multipart/form-data"> 
+                    @csrf
                     <div>
                         <x-input-label for="name" :value="__('Name')" />
                         <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />

@@ -22,7 +22,7 @@ class StoreCityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['require', 'string', 'max:255', 'unique:'.City::class],
+            'name' => ['required', 'string', 'max:255', 'unique:'.City::class],
         ];
     }
 }

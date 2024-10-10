@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use App\Http\Requests\StoreCityRequest;
+use Illuminate\Support\Facades\DB;
 
 class CityController extends Controller
 {
@@ -21,15 +25,24 @@ class CityController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.cities.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCityRequest $request)
     {
-        //
+        // 1. validasi data 
+        // 2. mulai insert ke table di database
+        // 3. mengembalikan pengguna kepada halaman index (list of city)
+        DB::transaction(function () use($request){
+            $validated = $request->validated();
+            $validated['slug'] = Str::slug($validated['name']);
+            $newData =City::create($validated);
+        });
+
+        return redirect()->route('admin.cities.index');
     }
 
     /**
@@ -45,15 +58,20 @@ class CityController extends Controller
      */
     public function edit(City $city)
     {
-        //
+        return view('admin.cities.edit', compact('city'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, City $city)
+    public function update(StoreCityRequest $request, City $city)
     {
-        //
+        DB::transaction(function () use ($request, $city) {
+            $validated = $request->validated();
+            $validated['slug'] = Str::slug($validated['name']);
+            $city->update($validated);
+        });
+        return redirect()->route('admin.cities.index');
     }
 
     /**
@@ -61,6 +79,10 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
-        //
+        DB::transaction(function() use ($city) {
+            $city->delete();
+        });
+        
+        return redirect()->route('admin.cities.index')->with('success', 'City deleted successfully');
     }
 }

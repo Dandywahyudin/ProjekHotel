@@ -10,37 +10,38 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
-
-
+                
                 <div class="item-card flex flex-row justify-between items-center">
                     <div class="flex flex-row items-center gap-x-3">
-                        <img src=" " alt="" class="rounded-2xl object-cover w-[120px] h-[90px]">
+                        <img src="{{Storage::url($hotel->thumbnail)}}" alt="" class="rounded-2xl object-cover w-[120px] h-[90px]">
                         <div class="flex flex-col">
                             <h3 class="text-indigo-950 text-xl font-bold">
-                                asdsadsaasd
+                                {{$hotel->name}}
                             </h3>
                         <p class="text-slate-500 text-sm">
-                            asdasdsa, qweqweqwe
+                            {{$hotel->city->name}}, {{$hotel->country->name}}
                         </p>
                         </div>
                     </div> 
                     <div  class="hidden md:flex flex-col">
                         <p class="text-slate-500 text-sm">Price</p>
                         <h3 class="text-indigo-950 text-xl font-bold">
-                            Rp0/night
+                            Rp {{ number_format($hotel->getLowestRoomPrice(), 0, ',', '.') }}/night
                         </h3>
                     </div>
                     <div  class="hidden md:flex flex-col">
                         <p class="text-slate-500 text-sm">Star</p>
                         <h3 class="text-indigo-950 text-xl font-bold">
-                            3 star
+                            {{$hotel->star_level}}
                         </h3>
                     </div>
                     <div class="hidden md:flex flex-row items-center gap-x-3">
-                        <a href=" " class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
-                            Edit
+                        <a href="{{route('admin.hotels.edit', $hotel)}}" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                            edit
                         </a>
-                        <form action=" " method="POST"> 
+                        <form action="{{route('admin.hotels.destroy', $hotel)}}" method="POST"> 
+                            @csrf
+                            @method('DELETE')
                             <button type="submit" class="font-bold py-4 px-6 bg-red-700 text-white rounded-full">
                                 Delete
                             </button>
@@ -52,55 +53,66 @@
                 <h3 class="text-indigo-950 text-xl font-bold">Gallery Photos</h3>
 
                 <div class="flex flex-row gap-x-5"> 
-                        <img src=" " alt="" class="rounded-2xl object-cover w-[120px] h-[90px]">
+                    @foreach ($latestPhotos as $photo)
+                        <img src="{{Storage::url($photo->photo)}}" alt="" class="rounded-2xl object-cover w-[120px] h-[90px]">
+                    @endforeach
                      
                 </div>
-
                 <div>
-                    <h3 class="text-indigo-950 text-xl font-bold">Address</h3>
-                <p>
-                    asdasdsa qweqw q12
-                </p>
-                </div>
 
+                    <h3 class="text-indigo-950 text-xl font-bold">Address</h3>
+                    <p>
+                        {{$hotel->address}}
+                    </p>
+                </div>
+                <div>
+                    <iframe src="https://www.google.com/maps/embed?{{$hotel->link_gmaps}}" width="400" height="250" style="border: :0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" frameborder="0"></iframe>
+                </div>
+                
                 <hr class="my-5">
                 <div class="flex flex-row justify-between items-center">
+                    @csrf
                     <h3 class="text-indigo-950 text-xl font-bold">Rooms Available</h3>
-                    <a href=" " class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                    <a href="{{ route('admin.hotel_rooms.create', $hotel->slug) }}" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
                         Add New Room
                     </a>
                 </div>
- 
+
+                @forelse ($hotel->rooms as $room)
                 <div class="item-card flex flex-row justify-between items-center">
                     <div class="flex flex-row items-center gap-x-3">
-                        <img src=" " alt="" class="rounded-2xl object-cover w-[120px] h-[90px]">
+                        <img src="{{Storage::url($room->photo)}}" alt="" class="rounded-2xl object-cover w-[120px] h-[90px]">
                         <div class="flex flex-col">
                             <h3 class="text-indigo-950 text-xl font-bold">
-                                asdasd adsada
+                                {{ $room->name}}
                             </h3>
                         <p class="text-slate-500 text-sm">
-                            12 people
+                            {{ $room->total_people }} People
                         </p>
                         </div>
                     </div> 
                     <div  class="hidden md:flex flex-col">
                         <p class="text-slate-500 text-sm">Price</p>
                         <h3 class="text-indigo-950 text-xl font-bold">
-                            Rp 1/night
+                            Rp {{ number_format($room->price, 0, ',', '.') }}/night
                         </h3>
                     </div>
                     <div class="hidden md:flex flex-row items-center gap-x-3">
-                        <a href=" " class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+                        <a href="{{route('admin.hotel_rooms.edit', [$hotel->slug, $room])}}" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
                             Edit
                         </a>
-                        <form action=" " method="POST"> 
+                        <form action="{{route('admin.hotel_rooms.destroy', [$hotel->slug, $room->id ])}}" method="POST"> 
+                            @csrf
+                            @method('DELETE')
                             <button type="submit" class="font-bold py-4 px-6 bg-red-700 text-white rounded-full">
                                 Delete
                             </button>
                         </form>
                     </div>
                 </div> 
-
+                @empty
+                    <p>Data Tidak Ada</p>
+                @endforelse
             </div>
         </div>
     </div>

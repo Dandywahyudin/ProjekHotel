@@ -22,7 +22,7 @@ class storePaymentBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'proof' => ['required', 'image', 'mines:png, jpg, jpeg'],
+            'proof' => ['required', 'image', 'mimes:png, jpg, jpeg'],
         ];
     }
 }

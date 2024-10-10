@@ -23,7 +23,7 @@ class UpdateRoomRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'photo' => ['sometimes', 'image', 'mines:png,jpg,jpeg'],
+            'photo' => ['sometimes', 'image', 'mimes:png,jpg,jpeg'],
             'total_people' => ['required', 'integer'],
             'price' => ['required', 'integer'],
         ];

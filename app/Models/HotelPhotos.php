@@ -11,7 +11,7 @@ class HotelPhotos extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'photo',
-        'hotel_id',
+        'hotels_id',
     ];
 
     public function hotels(){

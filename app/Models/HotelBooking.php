@@ -16,7 +16,7 @@ class HotelBooking extends Model
         'total_days',
         'total_amount',
         'user_id',
-        'hotel_id',
+        'hotels_id',
         'room_id',
         'is_paid',
     ];

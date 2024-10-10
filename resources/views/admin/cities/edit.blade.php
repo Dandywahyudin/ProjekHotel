@@ -8,10 +8,12 @@
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden p-10 shadow-sm sm:rounded-lg"> 
-                <form method="POST" action=" " enctype="multipart/form-data"> 
+                <form method="POST" action="{{route('admin.cities.update', $city)}}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT'); 
                     <div>
                         <x-input-label for="name" :value="__('Name')" />
-                        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" value="{{$city->name}}" required autofocus autocomplete="name" />
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 

@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hotels;
 use App\Models\HotelRoom;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreRoomRequest;
+use App\Http\Requests\UpdateRoomRequest;
+use GrahamCampbell\ResultType\Success;
+use Illuminate\Auth\Events\Validated;
 
 class HotelRoomController extends Controller
 {
@@ -18,17 +25,32 @@ class HotelRoomController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Hotels $hotel)
     {
-        //
+        return view('admin.hotel_rooms.create', compact('hotel'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(StoreRoomRequest $request, Hotels $hotel)
+    {   
+        DB::transaction(function () use ($request, $hotel) {
+            $validated = $request->validated();
+            
+
+            if ($request->hasFile('photo')) {
+                $photoPath = $request->file('photo')->store('photos/' . date('Y/m/d'), 'public');
+                $validated['photo'] = $photoPath;
+            }
+
+            $validated['hotels_id'] = $hotel->id;
+
+            $room = HotelRoom::create($validated);
+        });
+
+        return redirect()->route('admin.hotels.show', $hotel->id);
+        
     }
 
     /**
@@ -42,24 +64,38 @@ class HotelRoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(HotelRoom $hotelRoom)
+    public function edit(Hotels $hotel,HotelRoom $hotelRoom)
     {
-        //
+        return view('admin.hotel_rooms.edit', compact('hotelRoom', 'hotel'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, HotelRoom $hotelRoom)
+    public function update(UpdateRoomRequest $request, HotelRoom $hotelRoom)
     {
-        //
+        DB::transaction(function () use ($request, $hotelRoom) {
+            $validated = $request->validated();
+            
+
+            if ($request->hasFile('photo')) {
+                $photoPath = $request->file('photo')->store('photos/' . date('Y/m/d'), 'public');
+                $validated['photo'] = $photoPath;
+            }
+            $hotelRoom->update($validated);
+        });
+
+        return redirect()->route('admin.hotels.show', $hotelRoom->hotels_id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(HotelRoom $hotelRoom)
+    public function destroy(Hotels $hotel, HotelRoom $hotelRoom)
     {
-        //
+        DB::transaction(function() use ($hotelRoom){
+            $hotelRoom->delete();
+        });
+        return redirect()->route('admin.hotels.show', $hotel->id)->with('Success');
     }
-}
+}   

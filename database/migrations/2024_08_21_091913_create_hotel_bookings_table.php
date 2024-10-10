@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('total_days');
             $table->unsignedBigInteger('total_amount');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('hotel_id')->constrained()->onDelete('cascade');
+            $table->foreignId('hotels_id')->constrained()->onDelete('cascade');
             $table->boolean('is_paid');
             $table->softDeletes();
             $table->timestamps();

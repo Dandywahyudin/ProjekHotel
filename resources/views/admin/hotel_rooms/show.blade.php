@@ -17,17 +17,17 @@
                         <img src=" " alt="" class="rounded-2xl object-cover w-[120px] h-[90px]">
                         <div class="flex flex-col">
                             <h3 class="text-indigo-950 text-xl font-bold">
-                                asdsad
+                               Wawan
                             </h3>
                         <p class="text-slate-500 text-sm">
-                            asdasdsa, asadsda
+                            Wawan, asadsda
                         </p>
                         </div>
                     </div> 
                     <div  class="hidden md:flex flex-col">
                         <p class="text-slate-500 text-sm">Price</p>
                         <h3 class="text-indigo-950 text-xl font-bold">
-                            Rp 1/night
+                            Rp Wawan/night
                         </h3>
                     </div>
                     <div  class="hidden md:flex flex-col">
@@ -40,7 +40,7 @@
                         <a href=" " class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
                             Edit
                         </a>
-                        <form action=" " method="POST"> 
+                        <form action="" method="POST">
                             <button type="submit" class="font-bold py-4 px-6 bg-red-700 text-white rounded-full">
                                 Delete
                             </button>
